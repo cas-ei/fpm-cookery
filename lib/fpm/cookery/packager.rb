@@ -10,6 +10,8 @@ require 'fpm/cookery/package/version'
 require 'fpm/cookery/package/maintainer'
 require 'fpm'
 
+require 'pry'
+
 module FPM
   module Cookery
     class Packager
@@ -71,7 +73,6 @@ module FPM
           Dir.chdir(recipe.cachedir) do
             Log.info "Fetching source: #{source.source_url}"
             source.fetch(:quiet => config[:quiet])
-
             if source.checksum?
               SourceIntegrityCheck.new(recipe).tap do |check|
                 if check.checksum_missing?
