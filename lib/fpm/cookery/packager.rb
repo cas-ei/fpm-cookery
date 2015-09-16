@@ -10,6 +10,8 @@ require 'fpm/cookery/package/version'
 require 'fpm/cookery/package/maintainer'
 require 'fpm'
 
+require 'pry'
+
 module FPM
   module Cookery
     class Packager

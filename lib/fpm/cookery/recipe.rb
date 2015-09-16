@@ -14,6 +14,8 @@ require 'fpm/cookery/package/npm'
 require 'fpm/cookery/package/pear'
 require 'fpm/cookery/package/python'
 
+require 'pry'
+
 module FPM
   module Cookery
     class BaseRecipe
@@ -72,7 +74,8 @@ module FPM
 
       attr_rw :arch, :description, :homepage, :maintainer, :md5, :name,
               :revision, :section, :sha1, :sha256, :spec, :vendor, :version,
-              :pre_install, :post_install, :pre_uninstall, :post_uninstall,
+              :pre_install, :post_install,
+              :pre_uninstall, :post_uninstall,
               :license, :omnibus_package, :omnibus_dir, :chain_package,
               :default_prefix
 
@@ -220,5 +223,7 @@ module FPM
         FPM::Cookery::Package::PEAR.new(self, config)
       end
     end
+
+   require 'fpm/cookery/recipe/bin'
   end
 end
