@@ -14,9 +14,9 @@ module FPM
 
       # Default action for a binary install is to copy items selected
       def install
-        puts "Build Dir #{builddir}"
-        puts "Build Dir #{destdir}"
         FileUtils.cp_r File.join(builddir,'.'), destdir
+        #Remove build cookie
+        Dir.glob("#{destdir}/build-cookie-*").each { |f| File.delete(f) }
       end
     end
   end
