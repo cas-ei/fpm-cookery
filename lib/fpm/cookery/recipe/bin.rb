@@ -16,7 +16,10 @@ module FPM
       def install
         FileUtils.cp_r File.join(builddir,'.'), destdir
         #Remove build cookie
-        Dir.glob("#{destdir}/build-cookie-*").each { |f| File.delete(f) }
+        Dir.glob("#{destdir}/.build-cookie-*").each do |f| 
+          puts "Deleting Build Cookie #{f}"
+          File.delete(f) 
+        end
       end
     end
   end
