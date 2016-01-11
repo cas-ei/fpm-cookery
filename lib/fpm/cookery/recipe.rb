@@ -6,12 +6,14 @@ require 'fpm/cookery/source_handler'
 require 'fpm/cookery/utils'
 require 'fpm/cookery/path_helper'
 require 'fpm/cookery/environment'
+require 'fpm/cookery/lifecycle_hooks'
 require 'fpm/cookery/package/cpan'
 require 'fpm/cookery/package/dir'
 require 'fpm/cookery/package/gem'
 require 'fpm/cookery/package/npm'
 require 'fpm/cookery/package/pear'
 require 'fpm/cookery/package/python'
+require 'fpm/cookery/package/virtualenv'
 
 require 'pry'
 
@@ -21,6 +23,7 @@ module FPM
       include FileUtils
       include FPM::Cookery::Utils
       include FPM::Cookery::PathHelper
+      include FPM::Cookery::LifecycleHooks
 
       def self.attr_rw(*attrs)
         attrs.each do |attr|
@@ -169,13 +172,26 @@ module FPM
           @spec = spec
         end
         alias_method :url, :source
+
+        def extracted_source(path = nil)
+          return @extracted_source if path.nil?
+          @extracted_source = path
+        end
       end
 
       def source
         self.class.source
       end
 
-      attr_reader :source_handler
+      def extracted_source
+        self.class.extracted_source
+      end
+
+      def sourcedir=(sourcedir)
+        @sourcedir = sourcedir
+      end
+
+      attr_reader :source_handler, :sourcedir
 
       extend Forwardable
       def_delegator :@source_handler, :local_path
@@ -213,6 +229,13 @@ module FPM
       end
     end
 
-   require 'fpm/cookery/recipe/bin'
+    class VirtualenvRecipe < BaseRecipe
+      attr_rw :virtualenv_pypi, :virtualenv_install_location, :virtualenv_fix_name
+      def input(config)
+        FPM::Cookery::Package::Virtualenv.new(self, config)
+      end
+    end
+
+    require 'fpm/cookery/recipe/bin'
   end
 end

@@ -199,6 +199,12 @@ describe "Recipe" do
     end
   end
 
+  describe "#extracted_source" do
+    it "can be set" do
+      check_attribute(:extracted_source, 'test-1.0.0')
+    end
+  end
+
   def self.spec_recipe_attribute_list(name, list)
     class_eval %Q{
       describe "##{name}" do
@@ -271,6 +277,17 @@ describe "Recipe" do
         expect(klass.spec).to eq({:foo => 'bar'})
         expect(klass.new(__FILE__, config).spec).to eq({:foo => 'bar'})
       end
+    end
+  end
+
+  describe ".sourcedir" do
+    it "is not set by default" do
+      expect(recipe.sourcedir).to be_nil
+    end
+
+    it "can be set" do
+      recipe.sourcedir = '/tmp/foo/bar'
+      expect(recipe.sourcedir).to eq('/tmp/foo/bar')
     end
   end
 
