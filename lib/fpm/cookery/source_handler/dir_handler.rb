@@ -6,7 +6,7 @@ require 'pry'
 module FPM
   module Cookery
     class SourceHandler
-      class Dir < FPM::Cookery::SourceHandler::Template
+      class DirHandler < FPM::Cookery::SourceHandler::Template
         CHECKSUM = false
         NAME = :dir
 
